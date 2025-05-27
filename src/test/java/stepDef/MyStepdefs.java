@@ -5,21 +5,34 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import pageObject.HomePage;
 
 import java.time.Duration;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class MyStepdefs extends EnvTarget {
     @Given("the user is on the ParaBank homepage")
     public void theUserIsOnTheParaBankHomepage() {
-        System.setProperty("webdriver.chrome.driver", "src/test/java/resources/chromedriver.exe");
-        driver = new ChromeDriver();
+
+        // with WebDriverManager
+        WebDriverManager.chromedriver().setup();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        driver = new ChromeDriver(options);
+
+        // without WebDriverManaager
+//        System.setProperty("webdriver.chrome.driver", "src/test/java/resources/chromedriver.exe");
+//        driver = new ChromeDriver();
+
         driver.manage().window().fullscreen();
+
         // set url
         driver.get(parabankUrl);
         Duration duration = Duration.ofSeconds(10);
